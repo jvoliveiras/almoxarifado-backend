@@ -7,6 +7,7 @@ use App\Models\Compra;
 use App\Models\ItemCompra;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use DB;
 
 class CompraController extends Controller
 {

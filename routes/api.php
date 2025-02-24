@@ -10,6 +10,7 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\ProdutoFuncionarioController;
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\CompraController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -21,6 +22,7 @@ Route::middleware('auth:api')->group(function () {
     
     Route::resource('empresas', EmpresaController::class);
     Route::resource('produtos', ProdutoController::class);
+    Route::resource('compras', CompraController::class);
     Route::resource('categorias', CategoriaController::class);
     Route::resource('funcionarios', FuncionarioController::class);
     Route::resource('fornecedores', FornecedorController::class);
