@@ -64,9 +64,12 @@ class CompraController extends Controller
                 ]);
             }
 
+
+            DB::commit();
             return response()->json($compra);
-            
+
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json(['error' => 'Erro ao salvar produto: ' . $e], 500);
         }
 
