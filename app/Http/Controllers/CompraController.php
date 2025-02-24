@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\StockMove;
 use Illuminate\Http\Request;
 use App\Models\Compra;
 use App\Models\ItemCompra;
@@ -71,6 +72,9 @@ class CompraController extends Controller
                     'valor_unitario' => $valorUnitario,
                     'subtotal' => $subtotal
                 ]);
+
+                $stockMove = new StockMove();
+                $stockMove->aumentaEstoque($i['produto']['id'], $quantidade);
             }
 
             DB::commit();

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\StockMove;
 use Illuminate\Http\Request;
-use App\Models\Produto;
-use App\Models\Funcionario;
 use App\Models\ProdutoFuncionario;
 use App\Models\ProdutoFuncionarioDev;
 use App\Models\ProdutoPatrimonio;
@@ -51,7 +50,8 @@ class ProdutoFuncionarioController extends Controller
                     'patrimonio_produto' => $patProd
                 ]);
 
-                $this->diminuiEstoque($p['produto_id'], $quantidade);
+                $stockMove = new StockMove();
+                $stockMove->diminuiEstoque($p['produto_id'], $quantidade);
             }
 
             DB::commit();
@@ -100,7 +100,8 @@ class ProdutoFuncionarioController extends Controller
                     $this->alteraDisponibilidadePatrimonio($i['produto_id'], $patProd);
                 }
 
-                $this->aumentaEstoque($i['produto_id'], $i['aDevolver']);
+                $stockMove = new StockMove();
+                $stockMove->aumentaEstoque($i['produto_id'], $i['aDevolver']);
             }
 
             DB::commit();
@@ -133,21 +134,6 @@ class ProdutoFuncionarioController extends Controller
         $pdf = Pdf::loadView('relatorios.movimentacao_funcionario', compact('data'));
  
         return $pdf->download('relatorio_movimentacao_funcionario.pdf');
-    }
-
-
-    private function diminuiEstoque($produto_id, $quantidade){
-        $produto = Produto::find($produto_id);
-
-        $produto->estoque_atual -= $quantidade;
-        $produto->save();
-    }
-
-    private function aumentaEstoque($produto_id, $quantidade){
-        $produto = Produto::find($produto_id);
-
-        $produto->estoque_atual += $quantidade;
-        $produto->save();
     }
 
     private function geraCodigoEmprestimo() {
