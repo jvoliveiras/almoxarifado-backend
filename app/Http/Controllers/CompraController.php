@@ -27,6 +27,10 @@ class CompraController extends Controller
         ->orderBy('updated_at', 'desc')
         ->get();
 
+        foreach($compras as $c){
+            $c->fornecedor;
+        }
+
         return response()->json($compras); 
     }
 
@@ -56,15 +60,18 @@ class CompraController extends Controller
             ]);
 
             foreach($itens as $i){
+                $quantidade = str_replace(',', '.', $i['quantidade']);
+                $valorUnitario = str_replace(',', '.', $i['valor']);
+                $subtotal = str_replace(',', '.', $i['subtotal']);
+
                 ItemCompra::create([
                     'compra_id' => $compra->id,
-                    'produto_id' => $i['produto']->id,
-                    'quantidade' => $i['quantidade'],
-                    'valor_unitario' => $i['valor'],
-                    'subtotal' => $i['subtotal']
+                    'produto_id' => $i['produto']['id'],
+                    'quantidade' => $quantidade,
+                    'valor_unitario' => $valorUnitario,
+                    'subtotal' => $subtotal
                 ]);
             }
-
 
             DB::commit();
             return response()->json($compra);
@@ -76,25 +83,11 @@ class CompraController extends Controller
 
     }
 
-    public function storePatrimonios($produto_id, $patrimonios){
-        try {
-            foreach($patrimonios as $pat){
-                ProdutoPatrimonio::create([
-                    'produto_id' => $produto_id,
-                    'patrimonio' => $pat
-                ]);
-            }
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Erro ao salvar patrimonios: ' . $e], 500);
-        }
-
-    }
-
     public function destroy($id)
     {
-        $produto = Produto::findOrFail($id);
-        $produto->delete();
+        $compra = Compra::findOrFail($id);
+        $compra->delete();
 
-        return response()->json(['message' => 'Produto excluído com sucesso']);
+        return response()->json(['message' => 'Compra excluída com sucesso']);
     }
 }

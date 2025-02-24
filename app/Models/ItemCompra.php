@@ -10,6 +10,6 @@ class ItemCompra extends Model
     use HasFactory;
 
     protected $fillable = [
-        'compra_id', 'produto_id', 'quantidade', 'valor', 'subtotal'
+        'compra_id', 'produto_id', 'quantidade', 'valor_unitario', 'subtotal'
     ];
 }

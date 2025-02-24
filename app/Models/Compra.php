@@ -11,6 +11,11 @@ class Compra extends Model
 
     protected $fillable = [
         'empresa_id', 'fornecedor_id', 'usuario_id', 'valor_bruto', 'desconto', 'acrescimo', 'qtd_itens', 'chave', 'numero_nf',
-        'tipo_insercao', 'observacao'
+        'tipo_insercao', 'observacao', 'data_recebimento'
     ];
+
+    public function fornecedor()
+    {
+        return $this->belongsTo(Fornecedor::class);
+    }
 }
