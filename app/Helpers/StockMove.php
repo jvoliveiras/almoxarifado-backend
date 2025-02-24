@@ -20,5 +20,19 @@ class StockMove {
         $produto->save();
     }
 
+    public function aumentaEstoqueTotal($produto_id, $quantidade){
+        $produto = Produto::find($produto_id);
 
+        $produto->estoque_atual += $quantidade;
+        $produto->estoque_total += $quantidade;
+        $produto->save();
+    }
+
+    public function diminuiEstoqueTotal($produto_id, $quantidade){
+        $produto = Produto::find($produto_id);
+
+        $produto->estoque_atual -= $quantidade;
+        $produto->estoque_total -= $quantidade;
+        $produto->save();
+    }
 }

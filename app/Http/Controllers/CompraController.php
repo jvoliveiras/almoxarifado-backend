@@ -74,7 +74,7 @@ class CompraController extends Controller
                 ]);
 
                 $stockMove = new StockMove();
-                $stockMove->aumentaEstoque($i['produto']['id'], $quantidade);
+                $stockMove->aumentaEstoqueTotal($i['produto']['id'], $quantidade);
             }
 
             DB::commit();
@@ -89,7 +89,15 @@ class CompraController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
+
         $compra = Compra::findOrFail($id);
+
+        foreach($compra->itens as $i){
+            $stockMove = new StockMove();
+            $stockMove->diminuiEstoqueTotal($i->produto_id, $i->quantidade);
+        }
+
         $compra->delete();
 
         return response()->json(['message' => 'Compra excluída com sucesso']);

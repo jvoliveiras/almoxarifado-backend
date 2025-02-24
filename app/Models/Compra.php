@@ -18,4 +18,8 @@ class Compra extends Model
     {
         return $this->belongsTo(Fornecedor::class);
     }
+
+    public function itens(){
+        return $this->hasMany('App\Models\ItemCompra', 'compra_id', 'id');
+    }
 }
